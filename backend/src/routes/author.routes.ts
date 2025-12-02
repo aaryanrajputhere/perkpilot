@@ -6,6 +6,7 @@ import {
   updateAuthor,
   deleteAuthor,
 } from '../controllers/author.controller.js';
+import { requireAuth, checkAdminAccess } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
@@ -14,16 +15,16 @@ const router = express.Router();
 router.get("/", getAllAuthors);
 
 // POST create a new author
-router.post("/", createAuthor);
+router.post("/", requireAuth, checkAdminAccess, createAuthor);
 
 // ID-based routes (param) - declared after specific routes
 // GET a single author by ID
 router.get("/:id", getAuthorById);
 
 // PUT update an existing author
-router.put("/:id", updateAuthor);
+router.put("/:id", requireAuth, checkAdminAccess, updateAuthor);
 
 // DELETE an author
-router.delete("/:id", deleteAuthor);
+router.delete("/:id", requireAuth, checkAdminAccess, deleteAuthor);
 
 export default router;

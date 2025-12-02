@@ -136,10 +136,10 @@ export default function ProductHeader({
           </div>
           <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-4">
             <div
-              data-layer="Deal Claimed By"
+              data-layer="Users Claimed This Deal"
               className="DealClaimedBy justify-start text-neutral-50 text-base font-normal font-['Plus_Jakarta_Sans'] leading-normal flex-none shrink-0"
             >
-              Deal Claimed By
+              Users Claimed This Deal
             </div>
             <div
               data-layer="Upvotes"

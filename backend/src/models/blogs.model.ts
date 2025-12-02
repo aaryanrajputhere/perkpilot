@@ -302,7 +302,6 @@ const BlogSchema = new Schema<IBlog, IBlogModel, IBlogMethods>(
       unique: true,
       trim: true,
       lowercase: true,
-      index: true,
       validate: {
         validator: function (v: string) {
           return /^[a-z0-9-]+$/.test(v);

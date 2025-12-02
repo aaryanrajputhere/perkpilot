@@ -5,15 +5,16 @@ import {
   updateHomePageSection,
   resetHomePage,
 } from "../controllers/homepage.controller.js";
+import { requireAuth, checkAdminAccess } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
 router.get("/", getHomePage);
 
-router.put("/", updateHomePage);
+router.put("/", requireAuth, checkAdminAccess, updateHomePage);
 
-router.patch("/:section", updateHomePageSection);
+router.patch("/:section", requireAuth, checkAdminAccess, updateHomePageSection);
 
-router.delete("/", resetHomePage);
+router.delete("/", requireAuth, checkAdminAccess, resetHomePage);
 
 export default router;
