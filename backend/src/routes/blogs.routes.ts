@@ -9,19 +9,20 @@ import {
   getBlogPage,
   updateBlogPage,
 } from "../controllers/blogs.controller.js";
+import { requireAuth, checkAdminAccess } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
 // Blog page routes
 router.get("/blogpage", getBlogPage);
-router.put("/blogpage", updateBlogPage);
+router.put("/blogpage", requireAuth, checkAdminAccess, updateBlogPage);
 
 // Collection routes
 // GET all blogs with pagination and filtering
 router.get("/", getAllBlogs);
 
 // POST create a new blog
-router.post("/", createBlog);
+router.post("/", requireAuth, checkAdminAccess, createBlog);
 
 // Slug-based route (must be before :id route)
 // GET a single blog by slug
@@ -32,12 +33,12 @@ router.get("/slug/:slug", getBlogBySlug);
 router.get("/:id", getBlogById);
 
 // PUT update an existing blog
-router.put("/:id", updateBlog);
+router.put("/:id", requireAuth, checkAdminAccess, updateBlog);
 
 // PATCH update blog fields (e.g., featured toggle)
-router.patch("/:id", updateBlog);
+router.patch("/:id", requireAuth, checkAdminAccess, updateBlog);
 
 // DELETE a blog
-router.delete("/:id", deleteBlog);
+router.delete("/:id", requireAuth, checkAdminAccess, deleteBlog);
 
 export default router;

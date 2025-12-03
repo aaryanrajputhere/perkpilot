@@ -8,6 +8,7 @@ import {
   getStats,
   updateStats,
 } from "../controllers/deals.controller.js";
+import { requireAuth, checkAdminAccess } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
@@ -17,22 +18,22 @@ router.get("/", getAllDeals);
 
 // Stats routes must be before param routes
 router.get("/stats", getStats);
-router.put("/stats", updateStats);
+router.put("/stats", requireAuth, checkAdminAccess, updateStats);
 
 // POST create a new deal or update deal page (if ?page=true)
-router.post("/", createDeal);
+router.post("/", requireAuth, checkAdminAccess, createDeal);
 
 // PUT update deal page (if ?page=true) - must be before /:id route
-router.put("/", updateDeal);
+router.put("/", requireAuth, checkAdminAccess, updateDeal);
 
 // ID-based routes (param) - declared after specific routes
 // GET a single deal by ID
 router.get("/:id", getDealById);
 
 // PUT update an existing deal by ID
-router.put("/:id", updateDeal);
+router.put("/:id", requireAuth, checkAdminAccess, updateDeal);
 
 // DELETE a deal
-router.delete("/:id", deleteDeal);
+router.delete("/:id", requireAuth, checkAdminAccess, deleteDeal);
 
 export default router;

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function CTAReviewDetails() {
   return (
     <section className="w-full py-16 flex items-center justify-center">
@@ -41,18 +43,20 @@ export default function CTAReviewDetails() {
                 Start Free Trial
               </p>
             </div>
-            <div
-              className="backdrop-blur-md backdrop-filter bg-[rgba(250,250,250,0.08)] box-border content-stretch flex h-[48px] items-center justify-center px-[32px] py-[8px] relative rounded-[100px] shrink-0"
-              data-name="All Assets"
-              data-node-id="201:688"
-            >
-              <p
-                className="font-['Poppins'] leading-[24px] not-italic relative shrink-0 text-[16px] text-neutral-50"
-                data-node-id="201:689"
+            <Link to="/reviews">
+              <div
+                className="backdrop-blur-md backdrop-filter bg-[rgba(250,250,250,0.08)] box-border content-stretch flex h-[48px] items-center justify-center px-[32px] py-[8px] relative rounded-[100px] shrink-0"
+                data-name="All Assets"
+                data-node-id="201:688"
               >
-                View All Reviews
-              </p>
-            </div>
+                <p
+                  className="font-['Poppins'] leading-[24px] not-italic relative shrink-0 text-[16px] text-neutral-50"
+                  data-node-id="201:689"
+                >
+                  View All Reviews
+                </p>
+              </div>
+            </Link>
           </div>
         </div>
       </div>
