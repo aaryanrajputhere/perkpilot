@@ -12,6 +12,11 @@ interface HeroProps {
   imageComponent?: React.ReactNode;
   className?: string;
   shareUrl?: string;
+  // Breadcrumb navigation props
+  breadcrumbParentLink?: string; 
+  breadcrumbParentLabel?: string; 
+  breadcrumbCategoryLink?: string; 
+  showBreadcrumb?: boolean;
 }
 
 export default function Hero({
@@ -23,6 +28,10 @@ export default function Hero({
   socialIcons,
   imageComponent,
   shareUrl,
+  breadcrumbParentLink = "/blogs",
+  breadcrumbParentLabel = "Blogs",
+  breadcrumbCategoryLink,
+  showBreadcrumb = true,
 }: HeroProps) {
   const [copyMessage, setCopyMessage] = useState<"idle" | "copied" | "error">("idle");
   const resolvedShareUrl =
@@ -169,36 +178,45 @@ export default function Hero({
         data-layer="Frame 2147206224"
         className="Frame2147206224 w-full lg:w-[608px] flex flex-col justify-start items-start gap-6"
       >
-        <nav
-          data-layer="Frame 2147206180"
-          className="Frame2147206180 flex flex-col md:flex-row justify-start items-start md:items-center gap-2 px-4"
-          style={{ fontFamily: "Plus Jakarta Sans" }}
-        >
-          {/* Blogs Page Link with dot */}
-          <div className="flex items-center gap-2">
-            <span className="text-zinc-500 hover:text-zinc-400 transition-colors flex items-center" style={{ fontSize: "14px", lineHeight: "21px" }}>
-            •
-          </span>
-          <Link
-            to="/blogs"
-            className="text-zinc-500 hover:text-zinc-400 transition-colors flex items-center text-[14px] font-medium leading-[21px] whitespace-nowrap"
+        {showBreadcrumb && (
+          <nav
+            data-layer="Frame 2147206180"
+            className="Frame2147206180 flex flex-col md:flex-row justify-start items-start md:items-center gap-2 px-4"
+            style={{ fontFamily: "Plus Jakarta Sans" }}
           >
-            Blogs
-          </Link>
-          </div>
-          {/* Separator dot and Category Link */}
-          <div className="flex items-center gap-2">
-            <span className="text-zinc-100 flex items-center" style={{ fontSize: "14px", lineHeight: "21px" }}>
-            •
-          </span>
-          <Link
-            to={`/blogs${category ? `?category=${encodeURIComponent(category)}` : ""}`}
-              className="text-zinc-100 hover:text-zinc-200 transition-colors flex items-center text-sm font-medium leading-[21px] whitespace-nowrap"
-          >
-            {category}
-          </Link>
-          </div>
-        </nav>
+            {/* Parent Page Link with dot */}
+            {breadcrumbParentLink && breadcrumbParentLabel && (
+              <div className="flex items-center gap-2">
+                <span className="text-zinc-500 hover:text-zinc-400 transition-colors flex items-center" style={{ fontSize: "14px", lineHeight: "21px" }}>
+                  •
+                </span>
+                <Link
+                  to={breadcrumbParentLink}
+                  className="text-zinc-500 hover:text-zinc-400 transition-colors flex items-center text-[14px] font-medium leading-[21px] whitespace-nowrap"
+                >
+                  {breadcrumbParentLabel}
+                </Link>
+              </div>
+            )}
+            {/* Separator dot and Category Link */}
+            {category && (
+              <div className="flex items-center gap-2">
+                <span className="text-zinc-100 flex items-center" style={{ fontSize: "14px", lineHeight: "21px" }}>
+                  •
+                </span>
+                <Link
+                  to={
+                    breadcrumbCategoryLink ||
+                    `${breadcrumbParentLink}${category ? `?category=${encodeURIComponent(category)}` : ""}`
+                  }
+                  className="text-zinc-100 hover:text-zinc-200 transition-colors flex items-center text-sm font-medium leading-[21px] whitespace-nowrap"
+                >
+                  {category}
+                </Link>
+              </div>
+            )}
+          </nav>
+        )}
 
         <div
           data-layer="Notion vs obsidian vs roam research"
@@ -269,12 +287,14 @@ export default function Hero({
               {date}
             </div>
 
-            <div
-              data-layer="9 Minute Read"
-              className="MinuteRead text-zinc-500 text-sm font-medium font-['Poppins']"
-            >
-              {readTime} Read
-            </div>
+            {readTime && (
+              <div
+                data-layer="9 Minute Read"
+                className="MinuteRead text-zinc-500 text-sm font-medium font-['Poppins']"
+              >
+                {readTime}
+              </div>
+            )}
           </div>
 
           <div

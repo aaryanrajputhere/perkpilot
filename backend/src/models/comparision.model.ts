@@ -66,6 +66,8 @@ interface IToolComparisonBlog {
   featuresComparison: IFeatureComparison;
   prosConsCards: IProsConsCard[];
   blogModules: IComparisonModule[];
+  moreComparisonsSectionTitle?: string;
+  moreComparisons?: Types.ObjectId[];
   slug: string;
   isPublished: boolean;
   viewCount: number;
@@ -448,6 +450,21 @@ const ToolComparisonBlogSchema = new Schema<
           return new Set(moduleNumbers).size === moduleNumbers.length;
         },
         message: "Module numbers must be unique",
+      },
+    },
+    moreComparisonsSectionTitle: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    moreComparisons: {
+      type: [{ type: Schema.Types.ObjectId, ref: "ToolComparisonBlog" }],
+      default: [],
+      validate: {
+        validator: function (comparisons: Types.ObjectId[]) {
+          return comparisons.length <= 8;
+        },
+        message: "Cannot select more than 8 comparisons",
       },
     },
     slug: {

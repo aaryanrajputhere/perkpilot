@@ -105,8 +105,17 @@ export const getComparisonById = async (req: Request, res: Response) => {
     }
 
     const doc: ToolComparisonBlogDocument | null =
-      await ToolComparisonBlog.findById(id);
+      await ToolComparisonBlog.findById(id).populate({
+        path: "moreComparisons",
+        select: "heroHeading heroBody comparisonHeroImage slug toolsMentioned blogCategory readingTime _id",
+      });
     if (!doc) return res.status(404).json({ message: "Comparison not found" });
+    
+
+    if (doc.moreComparisons && !Array.isArray(doc.moreComparisons)) {
+      doc.moreComparisons = [];
+    }
+    
     res.json(doc);
   } catch (error) {
     res.status(500).json({ message: "Error fetching comparison", error });
@@ -121,7 +130,15 @@ export const createComparison = async (req: Request, res: Response) => {
 
     // Create using model so mongoose validators run
     const created = await ToolComparisonBlog.create(payload);
-
+    await created.populate({
+      path: "moreComparisons",
+      select: "heroHeading heroBody comparisonHeroImage slug toolsMentioned blogCategory readingTime _id",
+    });
+    
+    // Ensure moreComparisons is an array
+    if (created.moreComparisons && !Array.isArray(created.moreComparisons)) {
+      created.moreComparisons = [];
+    }
 
     res.status(201).json(created);
   } catch (error) {
@@ -148,11 +165,18 @@ export const updateComparison = async (req: Request, res: Response) => {
         new: true,
         runValidators: true,
       }
-    );
+    ).populate({
+      path: "moreComparisons",
+      select: "heroHeading heroBody comparisonHeroImage slug toolsMentioned blogCategory readingTime _id",
+    });
 
     if (!updated)
       return res.status(404).json({ message: "Comparison not found" });
 
+    // Ensure moreComparisons is an array
+    if (updated.moreComparisons && !Array.isArray(updated.moreComparisons)) {
+      updated.moreComparisons = [];
+    }
 
     res.json(updated);
   } catch (error) {
