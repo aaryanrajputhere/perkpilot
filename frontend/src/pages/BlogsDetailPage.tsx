@@ -40,9 +40,7 @@ export default function BlogsDetailPage() {
         setLoading(true);
         setError(null);
         
-        console.log("Fetching blog with ID/Slug:", id);
         const isSlug = !id.match(/^[0-9a-fA-F]{24}$/); 
-        console.log("Is Slug?", isSlug);
         
         const blogData = isSlug 
           ? await fetchBlogBySlug(id)
@@ -110,16 +108,6 @@ export default function BlogsDetailPage() {
     benefits: m.benefits ?? [],
     checked: idx === 0,
   })) || [];
-
-  console.log(" Processed modules for BlogModules:", modules);
-  console.log("Blog state:", {
-    heading: blog.blogHeading,
-    category: blog.blogCategory,
-    modulesCount: blog.modules?.length || 0,
-    toolsCount: blog.blogToolsMentioned?.length || 0,
-    toolBlogCardsCount: blog.blogToolBlogCards?.length || 0,
-    moreBlogsCount: blog.moreBlogs?.length || 0,
-  });
 
   return (
     <div className="flex flex-col min-h-screen relative overflow-x-hidden w-full">

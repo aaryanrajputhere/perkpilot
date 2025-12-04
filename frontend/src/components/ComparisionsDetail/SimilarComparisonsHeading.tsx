@@ -1,13 +1,13 @@
 import React from "react";
 
-interface SimilarBlogsHeading {
+interface SimilarComparisonsHeading {
   title?: string;
   onPrevious?: () => void;
   onNext?: () => void;
 }
 
-const SimilarBlogsHeading: React.FC<SimilarBlogsHeading> = ({
-  title = "Similar Blogs",
+const SimilarComparisonsHeading: React.FC<SimilarComparisonsHeading> = ({
+  title = "More Comparison Tools Blog",
   onPrevious,
   onNext,
 }) => {
@@ -64,8 +64,8 @@ const SimilarBlogsHeading: React.FC<SimilarBlogsHeading> = ({
           y2="80.7832"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#501BD6" />
-          <stop offset="1" stop-color="#7F57E2" />
+          <stop stopColor="#501BD6" />
+          <stop offset="1" stopColor="#7F57E2" />
         </linearGradient>
       </defs>
     </svg>
@@ -73,7 +73,6 @@ const SimilarBlogsHeading: React.FC<SimilarBlogsHeading> = ({
 
   return (
     <div className="flex items-center justify-between w-full">
-      {/* Heading */}
       <div className="flex flex-col gap-3 items-start justify-center">
         <h2
           className="capitalize"
@@ -92,7 +91,6 @@ const SimilarBlogsHeading: React.FC<SimilarBlogsHeading> = ({
         </h2>
       </div>
 
-      {/* Navigation Controls */}
       <div className="flex gap-4 items-center justify-center">
         <button
           onClick={onPrevious}
@@ -102,7 +100,7 @@ const SimilarBlogsHeading: React.FC<SimilarBlogsHeading> = ({
               ? "hover:opacity-75 cursor-pointer"
               : "opacity-30 cursor-not-allowed"
           }`}
-          aria-label="Previous blog"
+          aria-label="Previous comparison"
         >
           <ArrowLeftIcon />
         </button>
@@ -115,7 +113,7 @@ const SimilarBlogsHeading: React.FC<SimilarBlogsHeading> = ({
               ? "hover:opacity-75 cursor-pointer"
               : "opacity-30 cursor-not-allowed"
           }`}
-          aria-label="Next blog"
+          aria-label="Next comparison"
         >
           <ArrowRightIcon />
         </button>
@@ -124,4 +122,5 @@ const SimilarBlogsHeading: React.FC<SimilarBlogsHeading> = ({
   );
 };
 
-export default SimilarBlogsHeading;
+export default SimilarComparisonsHeading;
+

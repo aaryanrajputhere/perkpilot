@@ -10,6 +10,7 @@ import BlogModules from "../components/ComparisionsDetail/BlogModules";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Author from "../components/ComparisionsDetail/Author";
+import SimilarComparisons from "../components/ComparisionsDetail/SimilarComparisons";
 import fetchComparisonDetail from "../hooks/useComparisionDetail";
 import type { ToolComparisonBlog } from "../hooks/useComparisionDetail";
 import { fetchAuthorById, type Author as AuthorData } from "../hooks/useAuthor";
@@ -33,23 +34,17 @@ export default function ComparisionsDetailPage() {
         setLoading(true);
         const data = await fetchComparisonDetail(id);
         setComparison(data);
-        console.log("Comparison data:", data);
-        console.log("Author ID from comparison:", data.authorId || data.author);
 
         // Fetch author if authorId or author field is present
         const authorIdToFetch = data.authorId || data.author;
         if (authorIdToFetch) {
-          console.log("Fetching author with ID:", authorIdToFetch);
           try {
             const authorData = await fetchAuthorById(authorIdToFetch);
             setAuthor(authorData);
-            console.log("Fetched author data:", authorData);
           } catch (authorErr) {
             console.error("Failed to fetch author:", authorErr);
             // Don't fail the whole page if author fetch fails
           }
-        } else {
-          console.log("No authorId found in comparison data");
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch comparison");
@@ -126,6 +121,8 @@ export default function ComparisionsDetailPage() {
             description={displayDescription}
             date={displayTime}
             readTime={displayReadTime}
+            breadcrumbParentLink="/comparisons"
+            breadcrumbParentLabel="Comparisons"
             imageComponent={
               displayImage ? (
                 <img
@@ -176,6 +173,19 @@ export default function ComparisionsDetailPage() {
           </aside>
         </div>
       </div>
+
+      {comparison.moreComparisons && 
+       Array.isArray(comparison.moreComparisons) && 
+       comparison.moreComparisons.length > 0 && (
+        <div className="w-full bg-[#040404] lg:bg-gradient-to-t from-black to-[#190845] py-8 md:py-12 lg:py-16 xl:py-20 overflow-x-hidden">
+          <div className="w-full max-w-[1232px] mx-auto px-4 md:px-6 lg:px-8">
+            <SimilarComparisons
+              sectionTitle={comparison.moreComparisonsSectionTitle || "More Comparison Tools Blog"}
+              comparisons={comparison.moreComparisons}
+            />
+          </div>
+        </div>
+      )}
 
       <BackgroundDown />
       <Footer />

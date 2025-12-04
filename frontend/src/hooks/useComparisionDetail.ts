@@ -53,6 +53,8 @@ export interface ToolComparisonBlog {
   toolCount: number;
   url: string;
   id: string;
+  moreComparisonsSectionTitle?: string;
+  moreComparisons?: ToolComparisonBlog[];
 }
 
 const DEFAULT_TIMEOUT = 10000; // 10s
