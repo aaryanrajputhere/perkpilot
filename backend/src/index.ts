@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import connectDB from './config/db.js';
-import { env } from './config/env.js';
 import dealsRoutes from './routes/deals.routes.js';
 import comparisionRouter from './routes/comparision.routes.js';
 import reviewsRoutes from './routes/reviews.routes.js';
@@ -20,31 +19,12 @@ const app = express();
 
 app.use(helmet());
 
-const getAllowedOrigins = (): string[] => {
-  const origins: string[] = [];
-  
-  if (env.FRONTEND_URL) {
-    origins.push(env.FRONTEND_URL);
-  } else {
-    origins.push("http://localhost:5173");
-  }
-  
-  if (env.ADMIN_URL) {
-    origins.push(env.ADMIN_URL);
-  } else {
-    origins.push("http://localhost:5174");
-  }
-  
-  return origins;
-};
 
-const allowedOrigins = getAllowedOrigins();
-const corsOptions = {
-  origin: allowedOrigins,
+app.use(cors({
+  origin: true, 
   credentials: true,
   optionsSuccessStatus: 200,
-};
-app.use(cors(corsOptions));
+}));
 
 
 
