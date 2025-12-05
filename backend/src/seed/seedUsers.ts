@@ -9,8 +9,6 @@ import { env } from "../config/env.js";
 
 /**
  * Seed admin users based on ALLOWED_ADMIN_EMAIL environment variable
- * Usage: npm run seed:users
- * Or: ts-node src/seed/seedUsers.ts
  */
 async function seedUsers() {
   try {

@@ -24,15 +24,13 @@ const getAllowedOrigins = (): string[] => {
   const origins: string[] = [];
   
   if (env.FRONTEND_URL) {
-    const frontendUrls = env.FRONTEND_URL.split(',').map(url => url.trim().replace(/^["']|["']$/g, ''));
-    origins.push(...frontendUrls);
+    origins.push(env.FRONTEND_URL);
   } else {
     origins.push("http://localhost:5173");
   }
   
   if (env.ADMIN_URL) {
-    const adminUrls = env.ADMIN_URL.split(',').map(url => url.trim().replace(/^["']|["']$/g, ''));
-    origins.push(...adminUrls);
+    origins.push(env.ADMIN_URL);
   } else {
     origins.push("http://localhost:5174");
   }

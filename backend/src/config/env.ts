@@ -28,58 +28,16 @@ const envSchema = z.object({
         return emails.every((email) => emailRegex.test(email));
       },
       {
-        message: "ALLOWED_ADMIN_EMAIL must contain valid email address(es) separated by commas (e.g., 'admin@example.com' or 'admin1@example.com,admin2@example.com')",
+        message: "ALLOWED_ADMIN_EMAIL must contain valid email address(es) separated by commas (e.g., 'admin@example.com' or 'admin1@example.com,admin2@example.com' )",
       }
     ),
   FRONTEND_URL: z
     .string()
-    .transform((val) => {
-      if (!val) return val;
-      return val.replace(/^["']|["']$/g, '').trim();
-    })
-    .refine(
-      (val) => {
-        if (!val) return true;
-        const urls = val.split(',').map((url) => url.trim().replace(/^["']|["']$/g, '')).filter((url) => url.length > 0);
-        if (urls.length === 0) return false;
-        try {
-          return urls.every((url) => {
-            new URL(url);
-            return true;
-          });
-        } catch {
-          return false;
-        }
-      },
-      {
-        message: "FRONTEND_URL must be a valid URL or comma-separated URLs (e.g., 'https://example.com' or 'https://app1.com,https://app2.com')",
-      }
-    )
+    .url("FRONTEND_URL must be a valid URL (e.g., 'https://example.com')")
     .optional(),
   ADMIN_URL: z
     .string()
-    .transform((val) => {
-      if (!val) return val;
-      return val.replace(/^["']|["']$/g, '').trim();
-    })
-    .refine(
-      (val) => {
-        if (!val) return true;
-        const urls = val.split(',').map((url) => url.trim().replace(/^["']|["']$/g, '')).filter((url) => url.length > 0);
-        if (urls.length === 0) return false;
-        try {
-          return urls.every((url) => {
-            new URL(url);
-            return true;
-          });
-        } catch {
-          return false;
-        }
-      },
-      {
-        message: "ADMIN_URL must be a valid URL or comma-separated URLs (e.g., 'https://admin.example.com' or 'https://admin1.com,https://admin2.com')",
-      }
-    )
+    .url("ADMIN_URL must be a valid URL (e.g., 'https://admin.example.com')")
     .optional(),
 });
 
@@ -96,8 +54,10 @@ try {
         console.error(`    Received value: ${actualValue ? `"${actualValue}"` : '(undefined)'}`);
         if (pathKey === 'ALLOWED_ADMIN_EMAIL') {
           console.error(`    Expected format: "admin@example.com" or "admin1@example.com,admin2@example.com"`);
-        } else if (pathKey === 'FRONTEND_URL' || pathKey === 'ADMIN_URL') {
-          console.error(`    Expected format: "https://example.com" or "https://app1.com,https://app2.com"`);
+        } else if (pathKey === 'FRONTEND_URL') {
+          console.error(`    Expected format: "https://example.com" (without quotes)`);
+        } else if (pathKey === 'ADMIN_URL') {
+          console.error(`    Expected format: "https://admin.example.com" (without quotes)`);
         }
       }
     });
