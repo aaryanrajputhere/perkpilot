@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import connectDB from './config/db.js';
+import { env } from './config/env.js';
 import dealsRoutes from './routes/deals.routes.js';
 import comparisionRouter from './routes/comparision.routes.js';
 import reviewsRoutes from './routes/reviews.routes.js';
@@ -22,18 +23,17 @@ app.use(helmet());
 const getAllowedOrigins = (): string[] => {
   const origins: string[] = [];
   
-  if (process.env.FRONTEND_URL) {
-    const frontendUrls = process.env.FRONTEND_URL.split(',').map(url => url.trim());
+  if (env.FRONTEND_URL) {
+    const frontendUrls = env.FRONTEND_URL.split(',').map(url => url.trim().replace(/^["']|["']$/g, ''));
     origins.push(...frontendUrls);
   } else {
     origins.push("http://localhost:5173");
   }
   
-  if (process.env.ADMIN_URL) {
-    const adminUrls = process.env.ADMIN_URL.split(',').map(url => url.trim());
+  if (env.ADMIN_URL) {
+    const adminUrls = env.ADMIN_URL.split(',').map(url => url.trim().replace(/^["']|["']$/g, ''));
     origins.push(...adminUrls);
   } else {
-
     origins.push("http://localhost:5174");
   }
   

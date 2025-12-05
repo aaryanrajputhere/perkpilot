@@ -33,12 +33,23 @@ const envSchema = z.object({
     ),
   FRONTEND_URL: z
     .string()
+    .transform((val) => {
+      if (!val) return val;
+      return val.replace(/^["']|["']$/g, '').trim();
+    })
     .refine(
       (val) => {
         if (!val) return true;
-        const urls = val.split(',').map((url) => url.trim());
-        const urlRegex = /^https?:\/\/.+/;
-        return urls.every((url) => urlRegex.test(url));
+        const urls = val.split(',').map((url) => url.trim().replace(/^["']|["']$/g, '')).filter((url) => url.length > 0);
+        if (urls.length === 0) return false;
+        try {
+          return urls.every((url) => {
+            new URL(url);
+            return true;
+          });
+        } catch {
+          return false;
+        }
       },
       {
         message: "FRONTEND_URL must be a valid URL or comma-separated URLs (e.g., 'https://example.com' or 'https://app1.com,https://app2.com')",
@@ -47,12 +58,23 @@ const envSchema = z.object({
     .optional(),
   ADMIN_URL: z
     .string()
+    .transform((val) => {
+      if (!val) return val;
+      return val.replace(/^["']|["']$/g, '').trim();
+    })
     .refine(
       (val) => {
         if (!val) return true;
-        const urls = val.split(',').map((url) => url.trim());
-        const urlRegex = /^https?:\/\/.+/;
-        return urls.every((url) => urlRegex.test(url));
+        const urls = val.split(',').map((url) => url.trim().replace(/^["']|["']$/g, '')).filter((url) => url.length > 0);
+        if (urls.length === 0) return false;
+        try {
+          return urls.every((url) => {
+            new URL(url);
+            return true;
+          });
+        } catch {
+          return false;
+        }
       },
       {
         message: "ADMIN_URL must be a valid URL or comma-separated URLs (e.g., 'https://admin.example.com' or 'https://admin1.com,https://admin2.com')",
@@ -68,10 +90,15 @@ try {
   if (error instanceof z.ZodError) {
     error.issues.forEach((issue) => {
       console.error(`  - ${issue.path.join('.')}: ${issue.message}`);
-      if (issue.path.includes('ALLOWED_ADMIN_EMAIL')) {
-        const actualValue = process.env.ALLOWED_ADMIN_EMAIL;
+      const pathKey = issue.path[0] as string;
+      if (pathKey) {
+        const actualValue = process.env[pathKey];
         console.error(`    Received value: ${actualValue ? `"${actualValue}"` : '(undefined)'}`);
-        console.error(`    Expected format: "admin@example.com" or "admin1@example.com,admin2@example.com"`);
+        if (pathKey === 'ALLOWED_ADMIN_EMAIL') {
+          console.error(`    Expected format: "admin@example.com" or "admin1@example.com,admin2@example.com"`);
+        } else if (pathKey === 'FRONTEND_URL' || pathKey === 'ADMIN_URL') {
+          console.error(`    Expected format: "https://example.com" or "https://app1.com,https://app2.com"`);
+        }
       }
     });
   }
