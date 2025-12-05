@@ -31,6 +31,34 @@ const envSchema = z.object({
         message: "ALLOWED_ADMIN_EMAIL must contain valid email address(es) separated by commas (e.g., 'admin@example.com' or 'admin1@example.com,admin2@example.com')",
       }
     ),
+  FRONTEND_URL: z
+    .string()
+    .refine(
+      (val) => {
+        if (!val) return true;
+        const urls = val.split(',').map((url) => url.trim());
+        const urlRegex = /^https?:\/\/.+/;
+        return urls.every((url) => urlRegex.test(url));
+      },
+      {
+        message: "FRONTEND_URL must be a valid URL or comma-separated URLs (e.g., 'https://example.com' or 'https://app1.com,https://app2.com')",
+      }
+    )
+    .optional(),
+  ADMIN_URL: z
+    .string()
+    .refine(
+      (val) => {
+        if (!val) return true;
+        const urls = val.split(',').map((url) => url.trim());
+        const urlRegex = /^https?:\/\/.+/;
+        return urls.every((url) => urlRegex.test(url));
+      },
+      {
+        message: "ADMIN_URL must be a valid URL or comma-separated URLs (e.g., 'https://admin.example.com' or 'https://admin1.com,https://admin2.com')",
+      }
+    )
+    .optional(),
 });
 
 const env: z.infer<typeof envSchema> = (() => {

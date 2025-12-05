@@ -19,14 +19,36 @@ const app = express();
 
 app.use(helmet());
 
+const getAllowedOrigins = (): string[] => {
+  const origins: string[] = [];
+  
+  if (process.env.FRONTEND_URL) {
+    const frontendUrls = process.env.FRONTEND_URL.split(',').map(url => url.trim());
+    origins.push(...frontendUrls);
+  } else {
+    origins.push("http://localhost:5173");
+  }
+  
+  if (process.env.ADMIN_URL) {
+    const adminUrls = process.env.ADMIN_URL.split(',').map(url => url.trim());
+    origins.push(...adminUrls);
+  } else {
+
+    origins.push("http://localhost:5174");
+  }
+  
+  return origins;
+};
+
+const allowedOrigins = getAllowedOrigins();
 const corsOptions = {
-  origin: process.env.FRONTEND_URL 
-    ? process.env.FRONTEND_URL 
-    : ["http://localhost:5173", "http://localhost:5174"],
+  origin: allowedOrigins,
   credentials: true,
   optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
+
+
 
 
 
