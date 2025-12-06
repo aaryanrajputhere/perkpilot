@@ -57,13 +57,14 @@ export default function ProductFeatures({
           }
           .Frame2147206309 {
             gap: 12px !important;
-            width: 288px !important;
-            flex: none !important;
+            width: 100% !important;
+            flex: 1 !important;
+            min-width: 0 !important;
           }
           .RealTimeCollaboration {
             font-size: 24px !important;
             line-height: 32px !important;
-            width: 288px !important;
+            width: 100% !important;
             max-height: none !important;
             overflow: visible !important;
             white-space: normal !important;
@@ -74,7 +75,7 @@ export default function ProductFeatures({
             font-weight: 400 !important;
             color: #FFFFFF !important;
             text-align: left !important;
-            width: 288px !important;
+            width: 100% !important;
           }
           .PerksPage {
             width: 56px !important;
@@ -100,7 +101,7 @@ export default function ProductFeatures({
         >
           <div
             data-layer="Frame 2147206309"
-            className="Frame2147206309 flex flex-col items-start flex-1 min-w-0 md:flex-none"
+            className="Frame2147206309 flex flex-col items-start flex-1 min-w-0 w-full"
             style={{ gap: "10px" }}
           >
             <div

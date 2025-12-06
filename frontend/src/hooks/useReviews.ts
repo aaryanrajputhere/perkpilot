@@ -185,10 +185,6 @@ export const incrementReviewUpvotes = async (id: string): Promise<Review> => {
 };
 
 
-export const updateReviewUpvotes = async (id: string, upvotes: number): Promise<Review> => {
-  return incrementReviewUpvotes(id);
-};
-
 export const updateReviewShareCount = async (id: string, shareCount: number): Promise<Review> => {
   const response = await fetch(`${REVIEWS_API}/${id}`, {
     method: "PUT",
