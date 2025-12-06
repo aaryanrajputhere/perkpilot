@@ -332,8 +332,8 @@ const BlogSchema = new Schema<IBlog, IBlogModel, IBlogMethods>(
 );
 
 // ============ Indexes ============
+// Note: blogSlug index is automatically created by unique: true in field definition
 
-BlogSchema.index({ blogSlug: 1 });
 BlogSchema.index({ blogCategory: 1, blogIsPublished: 1 });
 BlogSchema.index({ blogIsPublished: 1, createdAt: -1 });
 BlogSchema.index({ blogIsFeatured: 1, createdAt: -1 });

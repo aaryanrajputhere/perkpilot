@@ -3,79 +3,10 @@ import { useNavigate } from "react-router-dom";
 import ComparisionsCard from "./ComparisionsCard";
 import { fetchHomePage } from "../../../hooks/useHomePage";
 import type { Comparison } from "../../../hooks/useHomePage";
-import deviconFigma from "../../../assets/images/app-icons/devicon_figma.svg";
-import deviconFramermotion from "../../../assets/images/app-icons/devicon_framermotion.svg";
-import deviconSlack from "../../../assets/images/app-icons/devicon_slack.svg";
-import logosAirtable from "../../../assets/images/app-icons/logos_airtable.svg";
-import skillIconsWebflow from "../../../assets/images/app-icons/skill-icons_webflow.svg";
-
-// Default mock data as fallback
-const defaultComparisons: Comparison[] = [
-  {
-    _id: "default-1",
-    heroHeading: "Framer Vs Webflow",
-    sectionHeadline: "Battle of Best No-Code Dev Tool",
-    heroBody: "Collaborative power vs. desktop dominance. Which one fits your workflow?",
-    toolsMentioned: [
-      { toolName: "Framer", toolLogo: deviconFramermotion },
-      { toolName: "Webflow", toolLogo: skillIconsWebflow },
-    ],
-  },
-  {
-    _id: "default-2",
-    heroHeading: "Figma Vs Adobe XD",
-    sectionHeadline: "Design Tool Showdown",
-    heroBody: "Real-time collaboration meets Adobe's ecosystem. Find your perfect design companion.",
-    toolsMentioned: [
-      { toolName: "Figma", toolLogo: deviconFigma },
-      { toolName: "Adobe XD", toolLogo: deviconFigma },
-    ],
-  },
-  {
-    _id: "default-3",
-    heroHeading: "Notion Vs Obsidian",
-    sectionHeadline: "Knowledge Management Battle",
-    heroBody: "All-in-one workspace versus powerful note-linking. Which suits your thinking style?",
-    toolsMentioned: [
-      { toolName: "Notion", toolLogo: logosAirtable },
-      { toolName: "Obsidian", toolLogo: deviconSlack },
-    ],
-  },
-  {
-    _id: "default-4",
-    heroHeading: "Framer Vs Webflow",
-    sectionHeadline: "Battle of Best No-Code Dev Tool",
-    heroBody: "Collaborative power vs. desktop dominance. Which one fits your workflow?",
-    toolsMentioned: [
-      { toolName: "Framer", toolLogo: deviconFramermotion },
-      { toolName: "Webflow", toolLogo: skillIconsWebflow },
-    ],
-  },
-  {
-    _id: "default-5",
-    heroHeading: "Figma Vs Adobe XD",
-    sectionHeadline: "Design Tool Showdown",
-    heroBody: "Real-time collaboration meets Adobe's ecosystem. Find your perfect design companion.",
-    toolsMentioned: [
-      { toolName: "Figma", toolLogo: deviconFigma },
-      { toolName: "Adobe XD", toolLogo: deviconFigma },
-    ],
-  },
-  {
-    _id: "default-6",
-    heroHeading: "Notion Vs Obsidian",
-    sectionHeadline: "Knowledge Management Battle",
-    heroBody: "All-in-one workspace versus powerful note-linking. Which suits your thinking style?",
-    toolsMentioned: [
-      { toolName: "Notion", toolLogo: logosAirtable },
-      { toolName: "Obsidian", toolLogo: deviconSlack },
-    ],
-  },
-];
 
 const ComparisionsGrid: React.FC = () => {
   const navigate = useNavigate();
-  const [comparisons, setComparisons] = useState<Comparison[]>(defaultComparisons);
+  const [comparisons, setComparisons] = useState<Comparison[]>([]);
 
   useEffect(() => {
     const loadComparisons = async () => {
@@ -87,8 +18,8 @@ const ComparisionsGrid: React.FC = () => {
           );
           setComparisons(uniqueComparisons);
         }
-      } catch {
-        // On error, keep showing default data
+      } catch (error) {
+        console.error('Failed to load comparisons data:', error);
       }
     };
 
@@ -98,6 +29,10 @@ const ComparisionsGrid: React.FC = () => {
   const handleViewComparison = (comparisonId: string) => {
     navigate(`/comparison/${comparisonId}`);
   };
+
+  if (comparisons.length === 0) {
+    return null;
+  }
 
   return (
     <div className="w-full lg: py-8">

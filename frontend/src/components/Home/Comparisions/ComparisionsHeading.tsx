@@ -62,8 +62,8 @@ const ComparisionsHeading: React.FC<ComparisionsHeadingProps> = ({
           y2="80.7832"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#501BD6" />
-          <stop offset="1" stop-color="#7F57E2" />
+          <stop stopColor="#501BD6" />
+          <stop offset="1" stopColor="#7F57E2" />
         </linearGradient>
       </defs>
     </svg>

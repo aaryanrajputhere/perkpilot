@@ -7,60 +7,9 @@ import profile1 from "../../../assets/images/profiles/profile-1.svg";
 import profile2 from "../../../assets/images/profiles/profile-2.svg";
 import profile3 from "../../../assets/images/profiles/profile-3.svg";
 
-const defaultReviews: Review[] = [
-  {
-    _id: "default-1",
-    productName: "Slack",
-    productType: "Communication Tool",
-    description: "Every communications experience, Integrated contact center, voice, video, chat, and APIs.",
-    aggregateRating: 4.8,
-    ratingCount: 1234,
-  },
-  {
-    _id: "default-2",
-    productName: "Slack",
-    productType: "Communication Tool",
-    description: "Every communications experience, Integrated contact center, voice, video, chat, and APIs.",
-    aggregateRating: 4.8,
-    ratingCount: 1234,
-  },
-  {
-    _id: "default-3",
-    productName: "Slack",
-    productType: "Communication Tool",
-    description: "Every communications experience, Integrated contact center, voice, video, chat, and APIs.",
-    aggregateRating: 4.8,
-    ratingCount: 1234,
-  },
-  {
-    _id: "default-4",
-    productName: "Slack",
-    productType: "Communication Tool",
-    description: "Every communications experience, Integrated contact center, voice, video, chat, and APIs.",
-    aggregateRating: 4.8,
-    ratingCount: 1234,
-  },
-  {
-    _id: "default-5",
-    productName: "Slack",
-    productType: "Communication Tool",
-    description: "Every communications experience, Integrated contact center, voice, video, chat, and APIs.",
-    aggregateRating: 4.8,
-    ratingCount: 1234,
-  },
-  {
-    _id: "default-6",
-    productName: "Slack",
-    productType: "Communication Tool",
-    description: "Every communications experience, Integrated contact center, voice, video, chat, and APIs.",
-    aggregateRating: 4.8,
-    ratingCount: 1234,
-  },
-];
-
 const ReviewsGrid: React.FC = () => {
   const navigate = useNavigate();
-  const [reviews, setReviews] = useState<Review[]>(defaultReviews);
+  const [reviews, setReviews] = useState<Review[]>([]);
 
   useEffect(() => {
     const loadReviews = async () => {
@@ -73,8 +22,8 @@ const ReviewsGrid: React.FC = () => {
           );
           setReviews(uniqueReviews);
         }
-      } catch {
-        // Error fetching reviews, using default data
+      } catch (error) {
+        console.error('Failed to load reviews data:', error);
       }
     };
 
@@ -84,6 +33,10 @@ const ReviewsGrid: React.FC = () => {
   const handleReadReview = (reviewId: string) => {
     navigate(`/review/${reviewId}`);
   };
+
+  if (reviews.length === 0) {
+    return null;
+  }
 
   return (
     <div className="w-full max-w-6xl mx-auto overflow-hidden px-4 md:px-0">

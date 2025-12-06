@@ -548,8 +548,8 @@ const ToolComparisonBlogSchema = new Schema<
 );
 
 // ============ Indexes ============
+// Note: slug index is automatically created by unique: true in field definition
 
-ToolComparisonBlogSchema.index({ slug: 1 });
 ToolComparisonBlogSchema.index({ blogCategory: 1, isPublished: 1 });
 ToolComparisonBlogSchema.index({ "toolsMentioned.toolName": 1 });
 ToolComparisonBlogSchema.index({ createdAt: -1 });

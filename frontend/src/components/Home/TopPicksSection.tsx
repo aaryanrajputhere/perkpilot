@@ -17,13 +17,15 @@ const defaultData = {
 
 const TopPicksSection: React.FC = () => {
   const [contentData, setContentData] = useState(defaultData);
+  const [hasData, setHasData] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     const loadData = async () => {
       try {
         const homepageData = await fetchHomePage();
 
-        if (homepageData.topPicks) {
+        if (homepageData.topPicks?.deals && homepageData.topPicks.deals.length > 0) {
+          setHasData(true);
           setContentData({
             badgeText: defaultData.badgeText,
             secondaryText: defaultData.secondaryText,
@@ -32,9 +34,12 @@ const TopPicksSection: React.FC = () => {
             ctaText: defaultData.ctaText,
             ctaLink: defaultData.ctaLink,
           });
+        } else {
+          setHasData(false);
         }
-      } catch {
-        // Error fetching data, using defaults
+      } catch (error) {
+        console.error('Failed to load top picks data:', error);
+        setHasData(false);
       }
     };
 
@@ -44,6 +49,10 @@ const TopPicksSection: React.FC = () => {
   const handleCTAClick = () => {
     void navigate("/deals");
   };
+
+  if (!hasData) {
+    return null;
+  }
 
   return (
     <section className="relative w-full min-h-screen flex items-center justify-center px-4 md:px-8">

@@ -79,34 +79,6 @@ const useInView = (threshold = 0.1) => {
   return [ref, isInView] as const;
 };
 
-// Default stats as fallback
-const defaultStats: StatItem[] = [
-  {
-    value: "5000+",
-    label: "Happy Customers",
-    numericValue: 5000,
-    suffix: "+",
-  },
-  {
-    value: "1000+",
-    label: "Expert Reviews",
-    numericValue: 1000,
-    suffix: "+",
-  },
-  {
-    value: "500+",
-    label: "Active Deals",
-    numericValue: 500,
-    suffix: "+",
-  },
-  {
-    value: "2M+",
-    label: "Total Savings",
-    numericValue: 2,
-    suffix: "M+",
-  },
-];
-
 // Helper function to parse value and suffix from API data
 const parseStatValue = (value: string): { numericValue: number; suffix: string } => {
   const match = value.match(/^(\d+(?:\.\d+)?)(.*)/);
@@ -121,7 +93,7 @@ const parseStatValue = (value: string): { numericValue: number; suffix: string }
 
 const Stats: React.FC = () => {
   const [ref, isInView] = useInView(0.3);
-  const [stats, setStats] = useState<StatItem[]>(defaultStats);
+  const [stats, setStats] = useState<StatItem[]>([]);
 
   useEffect(() => {
     const loadStats = async () => {
@@ -140,18 +112,23 @@ const Stats: React.FC = () => {
           });
           setStats(apiStats);
         }
-      } catch {
-        // Error fetching stats, using defaults
+      } catch (error) {
+        console.error('Failed to load stats data:', error);
       }
     };
 
     void loadStats();
   }, []);
 
-  const animatedValue0 = useCountUp(stats[0].numericValue, 2000, isInView);
-  const animatedValue1 = useCountUp(stats[1].numericValue, 2300, isInView);
-  const animatedValue2 = useCountUp(stats[2].numericValue, 2500, isInView);
-  const animatedValue3 = useCountUp(stats[3].numericValue, 2800, isInView);
+  // Always call hooks in the same order - this is critical for React Hooks rules
+  const animatedValue0 = useCountUp(stats[0]?.numericValue || 0, 2000, isInView && stats.length > 0);
+  const animatedValue1 = useCountUp(stats[1]?.numericValue || 0, 2300, isInView && stats.length > 1);
+  const animatedValue2 = useCountUp(stats[2]?.numericValue || 0, 2500, isInView && stats.length > 2);
+  const animatedValue3 = useCountUp(stats[3]?.numericValue || 0, 2800, isInView && stats.length > 3);
+
+  if (stats.length === 0) {
+    return null;
+  }
 
   const animatedValues = [
     animatedValue0,

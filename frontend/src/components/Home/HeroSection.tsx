@@ -40,7 +40,8 @@ const HeroSection: React.FC = () => {
             heroImage: homepageData.hero?.heroImage || defaultHeroData.heroImage,
           });
         }
-      } catch {
+      } catch (error) {
+        console.error('Failed to load hero data:', error);
         // Error fetching data, using defaults
       }
     };
