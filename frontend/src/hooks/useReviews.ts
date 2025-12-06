@@ -169,21 +169,21 @@ export const fetchReviewPageSettings = async (): Promise<ReviewPageSettings> => 
   return response.json();
 };
 
-export const updateReviewUpvotes = async (id: string, upvotes: number): Promise<Review> => {
-  const response = await fetch(`${REVIEWS_API}/${id}`, {
-    method: "PUT",
+export const incrementReviewUpvotes = async (id: string): Promise<Review> => {
+  const response = await fetch(`${REVIEWS_API}/${id}/upvote`, {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ upvotes }),
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to update upvotes: ${response.statusText}`);
+    throw new Error(`Failed to increment upvotes: ${response.statusText}`);
   }
 
   return response.json();
 };
+
 
 export const updateReviewShareCount = async (id: string, shareCount: number): Promise<Review> => {
   const response = await fetch(`${REVIEWS_API}/${id}`, {

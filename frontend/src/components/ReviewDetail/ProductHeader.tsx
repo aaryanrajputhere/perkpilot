@@ -141,12 +141,6 @@ export default function ProductHeader({
             >
               Users Claimed This Deal
             </div>
-            <div
-              data-layer="Upvotes"
-              className="Upvotes justify-start text-zinc-400 text-base font-normal font-['Plus_Jakarta_Sans'] leading-normal flex-none shrink-0"
-            >
-              {formatUpvotes(upvotes)}
-            </div>
           </div>
         </div>
       </div>

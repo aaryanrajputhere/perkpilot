@@ -442,6 +442,12 @@ export const updateReview = async (
       }
     }
 
+    if (updatedData.upvotes !== undefined) {
+      return res.status(400).json({ 
+        message: "Cannot update upvotes directly. Use POST /reviews/:id/upvote endpoint to increment upvotes." 
+      });
+    }
+
     const review = await Review.findByIdAndUpdate(id, updatedData, {
       new: true,
       runValidators: true,
@@ -480,6 +486,37 @@ export const deleteReview = async (
   }
 };
 
+export const incrementUpvotes = async (
+  req: Request<{ id: string }, IReview | ErrorResponse>,
+  res: Response<IReview | ErrorResponse>
+) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(String(id))) {
+      return res.status(400).json({ message: "Invalid review id" });
+    }
+
+    const review = await Review.findByIdAndUpdate(
+      id,
+      { $inc: { upvotes: 1 } },
+      { new: true, runValidators: true }
+    );
+
+    if (!review) return res.status(404).json({ message: "Review not found" });
+
+    const currentUpvotes = review.upvotes ?? 0;
+    if (currentUpvotes < 0) {
+      review.upvotes = 0;
+      await review.save();
+    }
+
+    res.json(review);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    res.status(500).json({ message: "Error incrementing upvotes", error: errorMessage });
+  }
+};
+
 export default {
   getAllReviews,
   getReviewPageSettings,
@@ -488,4 +525,5 @@ export default {
   createReview,
   updateReview,
   deleteReview,
+  incrementUpvotes,
 };

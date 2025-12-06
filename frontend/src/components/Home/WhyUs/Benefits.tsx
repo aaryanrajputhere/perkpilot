@@ -22,35 +22,35 @@ const CalendarIcon: React.FC = () => (
     <path
       d="M2 19.0898V5.08984C2 3.98527 2.89543 3.08984 4 3.08984H20C21.1046 3.08984 22 3.98527 22 5.08984V19.0898C22 20.1944 21.1046 21.0898 20 21.0898H4C2.89543 21.0898 2 20.1944 2 19.0898Z"
       stroke="white"
-      stroke-width="1.5"
+      strokeWidth="1.5"
     />
     <path
       d="M2 7.08984L22 7.08984"
       stroke="white"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M5 5.09984L5.01 5.08873"
       stroke="white"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M8 5.09984L8.01 5.08873"
       stroke="white"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M11 5.09984L11.01 5.08873"
       stroke="white"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

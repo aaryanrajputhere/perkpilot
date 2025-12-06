@@ -3,102 +3,9 @@ import Pick from "./Pick";
 import { fetchHomePage } from "../../../hooks/useHomePage";
 import type { Deal } from "../../../hooks/useDeals";
 
-const defaultDeals: Deal[] = [
-  {
-    title: "Slack",
-    category: "Communication Tool",
-    description: "Every communications experience, Integrated contact center, voice, video, chat, and APIs.",
-    discount: "25% OFF",
-    savings: "Save Up To $1234",
-    rating: 4.8,
-    verified: true,
-    primary_cta_link: "#",
-  },
-  {
-    title: "Slack",
-    category: "Communication Tool",
-    description: "Every communications experience, Integrated contact center, voice, video, chat, and APIs.",
-    discount: "25% OFF",
-    savings: "Save Up To $1234",
-    rating: 4.8,
-    verified: true,
-    primary_cta_link: "#",
-  },
-  {
-    title: "Slack",
-    category: "Communication Tool",
-    description: "Every communications experience, Integrated contact center, voice, video, chat, and APIs.",
-    discount: "25% OFF",
-    savings: "Save Up To $1234",
-    rating: 4.8,
-    verified: true,
-    primary_cta_link: "#",
-  },
-  {
-    title: "Slack",
-    category: "Communication Tool",
-    description: "Every communications experience, Integrated contact center, voice, video, chat, and APIs.",
-    discount: "25% OFF",
-    savings: "Save Up To $1234",
-    rating: 4.8,
-    verified: true,
-    primary_cta_link: "#",
-  },
-  {
-    title: "Slack",
-    category: "Communication Tool",
-    description: "Every communications experience, Integrated contact center, voice, video, chat, and APIs.",
-    discount: "25% OFF",
-    savings: "Save Up To $1234",
-    rating: 4.8,
-    verified: true,
-    primary_cta_link: "#",
-  },
-  {
-    title: "Slack",
-    category: "Communication Tool",
-    description: "Every communications experience, Integrated contact center, voice, video, chat, and APIs.",
-    discount: "25% OFF",
-    savings: "Save Up To $1234",
-    rating: 4.8,
-    verified: true,
-    primary_cta_link: "#",
-  },
-  {
-    title: "Slack",
-    category: "Communication Tool",
-    description: "Every communications experience, Integrated contact center, voice, video, chat, and APIs.",
-    discount: "25% OFF",
-    savings: "Save Up To $1234",
-    rating: 4.8,
-    verified: true,
-    primary_cta_link: "#",
-  },
-  {
-    title: "Slack",
-    category: "Communication Tool",
-    description: "Every communications experience, Integrated contact center, voice, video, chat, and APIs.",
-    discount: "25% OFF",
-    savings: "Save Up To $1234",
-    rating: 4.8,
-    verified: true,
-    primary_cta_link: "#",
-  },
-  {
-    title: "Slack",
-    category: "Communication Tool",
-    description: "Every communications experience, Integrated contact center, voice, video, chat, and APIs.",
-    discount: "25% OFF",
-    savings: "Save Up To $1234",
-    rating: 4.8,
-    verified: true,
-    primary_cta_link: "#",
-  },
-];
-
 const PicksGrid: React.FC = () => {
   const [isDesktop, setIsDesktop] = useState(false);
-  const [deals, setDeals] = useState<Deal[]>(defaultDeals);
+  const [deals, setDeals] = useState<Deal[]>([]);
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -122,13 +29,17 @@ const PicksGrid: React.FC = () => {
           );
           setDeals(uniqueDeals);
         }
-      } catch {
-        // Error fetching deals, using default data
+      } catch (error) {
+        console.error('Failed to load deals data:', error);
       }
     };
 
     void loadDeals();
   }, []);
+
+  if (deals.length === 0) {
+    return null;
+  }
 
   return (
     <div className="w-full max-w-6xl mx-auto overflow-hidden px-4 md:px-0">

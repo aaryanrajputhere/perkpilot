@@ -111,35 +111,98 @@ const DEFAULT_TIMEOUT = 10000; // 10s
 
 export async function fetchHomePage(
   url: string = DEFAULT_URL,
-  timeoutMs = DEFAULT_TIMEOUT
+  timeoutMs = DEFAULT_TIMEOUT,
+  retries = 2
 ): Promise<HomePageData> {
-  const controller = new AbortController();
-  const id = setTimeout(() => controller.abort(), timeoutMs);
+  const supportsAbort = typeof AbortController !== 'undefined';
+  
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    const controller = supportsAbort ? new AbortController() : null;
+    const id = supportsAbort 
+      ? setTimeout(() => controller?.abort(), timeoutMs)
+      : null;
 
-  try {
-    const res = await fetch(url, { signal: controller.signal });
+    try {
+      const fetchOptions: RequestInit = {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', 
+        mode: 'cors',
+      };
 
-    clearTimeout(id);
+      if (supportsAbort && controller) {
+        fetchOptions.signal = controller.signal;
+      }
 
-    if (!res.ok) {
-      const text = await res.text().catch(() => "");
-      throw new Error(
-        `Failed to fetch homepage: ${res.status} ${res.statusText} ${text}`
-      );
+      const res = await fetch(url, fetchOptions);
+
+      if (supportsAbort && id) {
+        clearTimeout(id);
+      }
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        const errorMessage = `Failed to fetch homepage: ${res.status} ${res.statusText}${text ? ` - ${text}` : ''}`;
+        console.error('Homepage fetch error:', errorMessage);
+        
+        if (attempt < retries && (res.status >= 500 || res.status === 0)) {
+          await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+          console.warn(`Homepage fetch attempt ${attempt + 1} failed, retrying...`);
+          continue;
+        }
+        
+        throw new Error(errorMessage);
+      }
+
+      const data = await res.json();
+      return data as HomePageData;
+    } catch (err) {
+      if (supportsAbort && err instanceof DOMException && err.name === "AbortError") {
+        const errorMessage = `Request timed out after ${timeoutMs}ms`;
+        console.error('Homepage fetch timeout:', errorMessage);
+
+        if (attempt < retries) {
+          await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+          console.warn(`Homepage fetch attempt ${attempt + 1} timed out, retrying...`);
+          continue;
+        }
+        
+        throw new Error(errorMessage);
+      }
+      
+      if (err instanceof Error) {
+        console.error('Homepage fetch error:', err.message, err);
+        
+        if (attempt < retries && (
+          err.message.includes('Failed to fetch') || 
+          err.message.includes('NetworkError') ||
+          err.message.includes('Network request failed')
+        )) {
+          await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+          console.warn(`Homepage fetch attempt ${attempt + 1} failed with network error, retrying...`);
+          continue;
+        }
+        
+        throw err;
+      }
+      
+      const errorMessage = "An unexpected error occurred while fetching homepage";
+      console.error('Homepage fetch unexpected error:', err);
+      
+      if (attempt < retries) {
+        await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+        console.warn(`Homepage fetch attempt ${attempt + 1} failed with unexpected error, retrying...`);
+        continue;
+      }
+      
+      throw new Error(errorMessage);
     }
-
-    const data = await res.json();
-
-    return data as HomePageData;
-  } catch (err) {
-    if (err instanceof DOMException && err.name === "AbortError") {
-      throw new Error(`Request timed out after ${timeoutMs}ms`);
-    }
-    if (err instanceof Error) {
-      throw err;
-    }
-    throw new Error("An unexpected error occurred while fetching homepage");
   }
+  
+  throw new Error('Failed to fetch homepage after all retries');
 }
 
 export default fetchHomePage;
