@@ -12,6 +12,8 @@ import PasswordGeneratorPage from "./pages/PasswordGeneratorPage";
 import InvoiceGeneratorPage from "./pages/InvoiceGeneratorPage";
 import ImageScraperPage from "./pages/ImageScraperPage";
 import ToolsPage from "./pages/ToolsPage";
+import TermsAndConditionsPage from "./pages/TermsAndConditionsPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
       <Route path="/invoice-generator" element={<InvoiceGeneratorPage />} />
       <Route path="/image" element={<ImageScraperPage />} />
       <Route path="/tools" element={<ToolsPage />} />
+      <Route path="/terms-and-conditions" element={<TermsAndConditionsPage />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
 
     </Routes>
   );

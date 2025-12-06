@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 // SVG Components
 function LinkedInIcon() {
   return (
@@ -397,22 +398,28 @@ export default function Footer() {
         </p>
         <div className="content-stretch flex flex-col gap-[10px] items-center xl:items-start relative shrink-0">
           <div className="content-stretch flex flex-row gap-[16px] xl:gap-[36px] items-center xl:items-start relative shrink-0">
-            <div className="content-stretch flex gap-[8px] items-center relative shrink-0 cursor-pointer hover:text-white transition-colors">
+            <Link
+              to="/terms-and-conditions"
+              className="content-stretch flex gap-[8px] items-center relative shrink-0 cursor-pointer hover:text-white transition-colors"
+            >
               <div className="flex flex-col justify-center leading-[0] not-italic relative shrink-0 text-[#ebeff5] text-[16px] whitespace-nowrap">
                 <p className="leading-[24px]">Terms of Service</p>
               </div>
               <div className="relative shrink-0 size-[12px]">
                 <ExternalLinkIcon />
               </div>
-            </div>
-            <div className="content-stretch flex gap-[8px] items-center relative shrink-0 cursor-pointer hover:text-white transition-colors">
+            </Link>
+            <Link
+              to="/privacy-policy"
+              className="content-stretch flex gap-[8px] items-center relative shrink-0 cursor-pointer hover:text-white transition-colors"
+            >
               <div className="flex flex-col justify-center leading-[0] not-italic relative shrink-0 text-[#ebeff5] text-[16px] whitespace-nowrap">
                 <p className="leading-[24px]">Privacy Policy</p>
               </div>
               <div className="relative shrink-0 size-[12px]">
                 <ExternalLinkIcon />
               </div>
-            </div>
+            </Link>
           </div>
         </div>
       </div>
