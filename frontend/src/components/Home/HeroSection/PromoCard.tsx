@@ -9,8 +9,12 @@ import {
   imgDeviconFramermotion,
   imgSkillIconsWebflow,
   imgHugeIconsChatGPT,
-  image,
+  image as fallbackImage,
 } from "./assets";
+
+interface PromoCardProps {
+  heroImage?: string;
+}
 
 const WhiteCircleLogo: React.FC<{ size?: number; className?: string }> = ({
   size = 40,
@@ -81,7 +85,9 @@ const CircleBulletPoint: React.FC<{ size?: number; className?: string }> = ({
   </svg>
 );
 
-export const PromoCard: React.FC = () => {
+export const PromoCard: React.FC<PromoCardProps> = ({ heroImage }) => {
+  const imageSrc = heroImage || fallbackImage;
+
   return (
     <div
       className="bg-[#672bff] overflow-clip relative rounded-[40px] xl:rounded-none xl:rounded-tl-[40px] xl:rounded-bl-[40px] w-full h-[600px] md:h-[524px]"
@@ -300,7 +306,7 @@ export const PromoCard: React.FC = () => {
         <img
           alt=""
           className="absolute inset-0 max-w-none object-center object-cover pointer-events-none size-full z-10"
-          src={image}
+          src={imageSrc}
         />
       </div>
 

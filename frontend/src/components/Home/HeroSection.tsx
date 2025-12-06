@@ -17,6 +17,7 @@ const defaultHeroData = {
   subHeadline: "Stop searching endlessly. Tell our AI Agent your vision and get an instant, personalized list of all the software you need-with exclusive discounts.",
   ctaText: "Start Exploring Deals & Discounts",
   ctaLink: "",
+  heroImage: "",
 };
 
 const HeroSection: React.FC = () => {
@@ -36,6 +37,7 @@ const HeroSection: React.FC = () => {
             subHeadline: homepageData.hero?.subHeadline || defaultHeroData.subHeadline,
             ctaText: homepageData.hero?.ctaText || defaultHeroData.ctaText,
             ctaLink: homepageData.hero?.ctaLink || defaultHeroData.ctaLink,
+            heroImage: homepageData.hero?.heroImage || defaultHeroData.heroImage,
           });
         }
       } catch {
@@ -130,7 +132,7 @@ const HeroSection: React.FC = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
         >
-          <PromoCard />
+          <PromoCard heroImage={heroData.heroImage} />
         </motion.div>
 
         {/* Mobile: CTA Button and Trust Indicator after PromoCard */}
