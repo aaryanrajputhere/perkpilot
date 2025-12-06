@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { updateReviewUpvotes, updateReviewShareCount } from "../../hooks/useReviews";
+import { incrementReviewUpvotes, updateReviewShareCount } from "../../hooks/useReviews";
 import { REVIEWS_API } from "../../config/backend";
 
 interface PricingSidebarProps {
@@ -46,22 +46,19 @@ export default function PricingSidebar({
   }, [upvotes]);
 
   const handleUpvote = async () => {
-    if (isUpdating || !reviewId) return;
+    if (isUpdating || !reviewId || hasUpvoted) return;
 
-    const newUpvotes = hasUpvoted ? localUpvotes - 1 : localUpvotes + 1;
-    
-    setLocalUpvotes(newUpvotes);
-    setHasUpvoted(!hasUpvoted);
     setIsUpdating(true);
 
     try {
-  
-      await updateReviewUpvotes(reviewId, newUpvotes);
+      const updatedReview = await incrementReviewUpvotes(reviewId);
+      const newUpvotes = updatedReview.upvotes || localUpvotes + 1;
+      
+      setLocalUpvotes(newUpvotes);
+      setHasUpvoted(true);
       onUpvote?.(newUpvotes);
     } catch (error) {
-      console.error("Failed to update upvotes:", error);
-      setLocalUpvotes(hasUpvoted ? localUpvotes + 1 : localUpvotes - 1);
-      setHasUpvoted(hasUpvoted);
+      console.error("Failed to increment upvotes:", error);
     } finally {
       setIsUpdating(false);
     }

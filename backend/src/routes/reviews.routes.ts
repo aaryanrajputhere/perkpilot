@@ -7,6 +7,7 @@ import {
   createReview,
   updateReview,
   deleteReview,
+  incrementUpvotes,
 } from "../controllers/reviews.controller.js";
 import { requireAuth, checkAdminAccess } from "../middleware/auth.middleware.js";
 
@@ -24,6 +25,9 @@ router.post("/", requireAuth, checkAdminAccess, createReview);
 // ID-based routes (param) - declared after specific routes
 // GET a single review by ID
 router.get("/:id", getReviewById);
+
+// POST increment upvotes (public endpoint, no auth required)
+router.post("/:id/upvote", incrementUpvotes);
 
 // PUT update an existing review
 router.put("/:id", requireAuth, checkAdminAccess, updateReview);
